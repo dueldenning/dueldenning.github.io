@@ -12,15 +12,17 @@ app.catchall = False
 
 # ----------------------------------------------------------
 
-@route("/", "GET")
+@route("/static/<filename>", "GET")
+def static_files(filename):
+	return static_file(filename, root="static")
 
+@route("/", "GET")
 def frontpage():
-	return static_file("index.html", root="pages")
+	return static_file("index.html", root="static")
 
 # ----------------------------------------------------------
 
 @route("/game/<game>/id/<id>/player/<player>", "GET")
-
 def play(game, id, player):
 
 	try:
