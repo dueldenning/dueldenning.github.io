@@ -1,5 +1,5 @@
 import json, threading
-from bottle_0_12_13 import app, request, response, route, run
+from bottle_0_12_13 import app, request, response, route, run, static_file
 import engine
 
 HOSTNAME = "127.0.0.1"
@@ -15,7 +15,7 @@ app.catchall = False
 @route("/", "GET")
 
 def frontpage():
-	return open("pages/index.html").read()
+	return static_file("index.html", root="pages")
 
 # ----------------------------------------------------------
 
