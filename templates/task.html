@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% include 'head.html' %}
+		<link rel="stylesheet" href="{{ url_for('static', filename='task.css') }}">
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="page-header">
+					<h1>{{ task.name }}</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="row">
+						<div class="col-sm-12" id="overview">
+							<div class="panel panel-default">
+								<div class="panel-heading">Overview</div>
+								<div class="panel-body">
+									{{ task.overview }}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12" id="breif">
+							<div class="panel panel-default">
+								<div class="panel-heading">Breif</div>
+								<div class="panel-body">
+									{{ task.briefs|random }} <!-- TODO -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-5">
+					<div class="row">
+						<div class="col-sm-12" id="draft">
+							<div class="panel panel-default">
+								<div class="panel-heading">Draft</div>
+								<div class="panel-body">
+									{{ task.draft }}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12" id="options">
+							<div class="panel panel-default">
+								<div class="panel-heading">Options</div>
+								<div class="panel-body">
+									<form class="form-horizontal">
+										{% for option_name in task.options %}
+											<div class="form-group">
+												<label for="option_{{ option_name }}" class="control-label col-sm-2">{{ option_name }}</label>
+												<div class="col-sm-10">
+													<select id="option_{{ option_name }}" data-option-name="{{ option_name }}" class="form-control">
+														{% for sub_option in task.options[option_name] %}
+															<option value="{{ sub_option }}">{{ sub_option }}</option>
+														{% endfor %}
+													</select>
+												</div>
+											</div>
+										{% endfor %}
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4" id="chatbox">
+					<div class="panel panel-default">
+						<div class="panel-heading">Chat</div>
+						<div id="chatbox-log" class="panel-body">
+							<ol class="list-unstyled">
+								<!-- chat lines go here -->
+							</ol>
+						</div>
+						<div class="panel-footer">
+							<input id="chatbox-input" type="text" placeholder="Chat here" class="form-control">
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer class="footer">
+				{% include 'footer.html' %}
+			</footer>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js" crossorigin="anonymous"></script>
+		<script src="https://unpkg.com/redux@3.7.2/dist/redux.min.js"></script>
+		<script src="http://underscorejs.org/underscore-min.js"></script>
+		<script src="https://cdn.jsdelivr.net/handlebarsjs/4.0.8/handlebars.min.js"></script>
+		<script>
+		(function (window) {
+			var parse_url = function(url) {
+				var a = document.createElement('a');
+				a.href = url;
+				return a;
+			};
+
+			var url_parts = parse_url(window.location).pathname.split('/');
+
+			var lawfight = window.lawfight = window.lawfight || {};
+			lawfight.task_name = url_parts[2];
+			lawfight.room_id = url_parts[4];
+			lawfight.username = '{{ username }}';
+		})(window);
+		</script>
+		<script type="text/javascript" src="{{ url_for('static', filename='task.js') }}"></script>
+	</body>
+</html>
