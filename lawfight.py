@@ -45,7 +45,7 @@ def on_get_task(task_name, room_id):
         flask.abort(404)
     task = tasks.get(task_name)
 
-    return render_template("task.html", room_id=room_id, username=session['username'], task=task)
+    return render_template("task.html", username=session['username'], task=task)
 
 # ----------------------------------------------------------
 @socketio.on('connect')
@@ -65,19 +65,30 @@ def on_join(message):
     app.logger.debug('message: ' + str(message))
     task_name = message['task_name']
     room_name = "{task_name}/{room_id}".format(task_name=task_name, room_id=message['room_id'])
+    username = session['username']
     
     open_rooms.leave_all_rooms(request.sid)
     room_metatdata = open_rooms.join_or_create(request.sid, room_name)
 
     if 'state' in room_metatdata:
         state = room_metatdata['state']
+        assignments = state['assignments']
+        if username in assignments:
+            app.logger.warn('User already assigned. This should ever happen?')
+        else:
+            numb_briefs = len(state['task']['briefs'])
+            num_current_assignments = len(assignments)
+            assignments[username] = num_current_assignments % numb_briefs
     else:
         task = tasks.get(task_name)
-        default_options = {option_name: option_values[0] for option_name, option_values in task.options.items()}
+        default_options = {option_name: option_values[0] for option_name, option_values in task['options'].items()}
         state = {
+            'task': task,
             'options': default_options,
             'chat': [],
-            'assignments': {username: 0, 'Jane': 1}, # TODO
+            'assignments': {
+                username: 0,
+            },
         }
         room_metatdata['state'] = state
     open_rooms.emit_in_present_rooms(request.sid, 'state change', {'new_state': state})

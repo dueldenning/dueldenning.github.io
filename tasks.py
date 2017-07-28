@@ -8,7 +8,10 @@ logger = logging.getLogger(__name__)
 def load_file(path):
     with path.open() as file:
         logger.debug('Loading task: ' + str(path))
-        return Task(path.stem, loads(file.read()))
+        #return Task(path.stem, loads(file.read()))
+        task = loads(file.read())
+        task['name'] = path.stem
+        return task
 
 class Task(object):
     def __init__(self, name, json):
@@ -32,5 +35,5 @@ class Tasks(object):
     def task_names(self) -> List[str]:
         return [name for name in self._tasks.keys()]
 
-    def get(self, task_name) -> Task:
+    def get(self, task_name):
         return self._tasks[task_name]

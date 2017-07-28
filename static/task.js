@@ -19,6 +19,8 @@
             state = {}
             state.options = action.state.options;
             state.chat = _.union(state.chat || [], action.state.chat);
+            state.task = action.state.task;
+            state.assignments = action.state.assignments;
         }
 
         return state;
@@ -27,8 +29,8 @@
 
     // Data binder
     var update_draft = (function() {
-        var draft_node = $('#draft');
-        var draft_template = Handlebars.compile(draft_node.html());
+        var draft_node = $('#draft .panel-body');
+        var draft_template = Handlebars.compile(draft_node.text());
         return function(context) {
         	console.log('Update draft:', context);
             draft_node.html(draft_template(context));
@@ -115,6 +117,9 @@
             });
 
             update_draft(new_state['options']);
+
+            var assignment = new_state['assignments'][lawfight.username];
+            $('#brief .panel-body').html(new_state['task']['briefs'][assignment]);
 
             socket.emit('state change', {
                 'new_state': new_state,
