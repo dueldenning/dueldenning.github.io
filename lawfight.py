@@ -50,24 +50,37 @@ def on_get_task(task_name, room_id):
 # ----------------------------------------------------------
 @socketio.on('connect')
 def on_connect():
-    app.logger.debug('Connect:' + str(request))
+    app.logger.debug('On Connect:' + str(request))
 
 @socketio.on('disconnect')
 def on_disconnect():
-    app.logger.debug('disconnect: ' + str(request))
-    # TODO
-    #open_rooms.emit_in_present_rooms(
-    #    request.sid, 'chat', {'msg': 'Left to room', 'username': session['username']})
-    open_rooms.leave_all_rooms(request.sid)
+    app.logger.debug('On Disconnect: ' + str(request))
+
+    task_name = request.args['task_name']
+    room_id = request.args['room_id']
+    room_name = "{task_name}/{room_id}".format(task_name=task_name, room_id=room_id)
+    username = session['username']
+
+    metadata = open_rooms.get_metadata(room_name)
+
+    state = metadata['state']
+    state['chat'].append({
+        'username': 'Server',
+        'message': '{} has left the room.'.format(username),
+        })
+
+    open_rooms.emit_in_room(room_name, 'state change', {'new_state': state})
+    open_rooms.leave_room(request.sid, room_name)
 
 @socketio.on('join')
 def on_join(message):
-    app.logger.debug('message: ' + str(message))
-    task_name = message['task_name']
-    room_name = "{task_name}/{room_id}".format(task_name=task_name, room_id=message['room_id'])
+    app.logger.debug('On Join: ' + str(message))
+
+    task_name = request.args['task_name']
+    room_id = request.args['room_id']
+    room_name = "{task_name}/{room_id}".format(task_name=task_name, room_id=room_id)
     username = session['username']
-    
-    open_rooms.leave_all_rooms(request.sid)
+
     room_metatdata = open_rooms.join_or_create(request.sid, room_name)
 
     if 'state' in room_metatdata:
@@ -85,22 +98,34 @@ def on_join(message):
         state = {
             'task': task,
             'options': default_options,
-            'chat': [],
+            'chat': [{
+                'username': 'Server',
+                'message': '{} room created.'.format(task_name),
+            }],
             'assignments': {
                 username: 0,
             },
         }
         room_metatdata['state'] = state
-    open_rooms.emit_in_present_rooms(request.sid, 'state change', {'new_state': state})
+    state['chat'].append({
+                'username': 'Server',
+                'message': '{} has joined the room.'.format(username),
+            })
+    open_rooms.emit_in_room(room_name, 'state change', {'new_state': state})
 
 @socketio.on('state change')
 def on_relay_message(message):
-    app.logger.debug('state change: ' + str(message))
-    room_name = "{task_name}/{room_id}".format(task_name=message['task_name'], room_id=message['room_id'])
+    app.logger.debug('On State Change: ' + str(message))
+
+    task_name = request.args['task_name']
+    room_id = request.args['room_id']
+    room_name = "{task_name}/{room_id}".format(task_name=task_name, room_id=room_id)
+    username = session['username']
+
     new_state = message['new_state']
     
     open_rooms.get_metadata(room_name)['state'] = new_state
-    open_rooms.emit_in_present_rooms(request.sid, 'state change', {'new_state': new_state})
+    open_rooms.emit_in_room(room_name, 'state change', {'new_state': new_state})
 
 
 # ----------------------------------------------------------

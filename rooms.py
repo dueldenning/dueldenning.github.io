@@ -23,19 +23,17 @@ class RoomsController(object):
         room.join(sid)
         return room.metatdata()
 
-    def emit_in_present_rooms(self, sid, event, *args, **kwargs):
-        for room in self._rooms.values():
-            if room.is_present(sid):
-                room.emit(event, *args, **kwargs)
+    def emit_in_room(self, room_name, event, *args, **kwargs):
+        room = self._rooms[room_name]
+        room.emit(event, *args, **kwargs)
 
-    def leave_all_rooms(self, sid):
-        keys_to_remove = []
-        for room_name, room in self._rooms.items():
-            room.leave(sid)
-            if room.is_empty():
-                room.destroy()
-                keys_to_remove.append(room_name)
-        for room_name in keys_to_remove:
+    def leave_room(self, sid, room_name):
+        room = self._rooms[room_name]
+        if not room.is_present(sid):
+            return
+        room.leave(sid)
+        if room.is_empty():
+            room.destroy()
             self._rooms.pop(room_name)
 
     def get_metadata(self, room_name):

@@ -40,14 +40,15 @@
     // server comms
     var socket = io({
         'path': '/io',
-        autoConnect: false,
+        'autoConnect': false,
+        'query': {
+            'task_name': lawfight.task_name,
+            'room_id': lawfight.room_id,
+        },
     });
     socket.on('connect', function() {
         console.log('connect');
-        socket.emit('join', {
-            'task_name': lawfight.task_name,
-            'room_id': lawfight.room_id,
-        });
+        socket.emit('join', {});
     });
     socket.on('state change', function(msg) {
         console.log('state change from server:', msg);
@@ -123,8 +124,6 @@
 
             socket.emit('state change', {
                 'new_state': new_state,
-                'task_name': lawfight.task_name,
-                'room_id': lawfight.room_id,
             });
         });
     })();
