@@ -44,7 +44,7 @@ def on_get_task(task_name, room_id):
     if not tasks.exists(task_name):
         flask.abort(404)
 
-    return render_template("task.html", username=session['username'], task=task)
+    return render_template("task.html", username=session['username'])
 
 # ----------------------------------------------------------
 @socketio.on('connect')

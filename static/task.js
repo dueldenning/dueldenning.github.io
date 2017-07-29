@@ -27,16 +27,6 @@
     };
     var state = Redux.createStore(state_control);
 
-    // Data binder
-    var update_draft = (function() {
-        var draft_node = $('#draft .panel-body');
-        var draft_template = Handlebars.compile(draft_node.text());
-        return function(context) {
-        	console.log('Update draft:', context);
-            draft_node.html(draft_template(context));
-        }
-    })();
-
     // server comms
     var socket = io({
         'path': '/io',
@@ -74,7 +64,7 @@
         });
     });
     // options
-    $('#options select').on('change', function(ev) {
+    $('#options').on('change', 'select', function(ev) {
         state.dispatch({
             type: 'CHANGE_OPTION',
             option_name: $(ev.target).data('option-name'),
@@ -84,6 +74,7 @@
 
     // state change
     (function() {
+        var template_cache = {};
         var last_state = {};
         state.subscribe(function() {
             var new_state = state.getState()
@@ -95,19 +86,6 @@
             console.log('state changed: ', last_state, new_state);
             last_state = new_state;
 
-            _.each(new_state['options'], function(option_value, option_name) {
-                console.log('state changed: ' + option_name, option_value);
-                var node = $('#option_' + option_name);
-                node.find('option').each(function() {
-                    var option_node = $(this);
-                    if (option_node.val() === option_value) {
-                        option_node.attr('selected', 'true');
-                    } else {
-                        option_node.removeAttr('selected');
-                    }
-                });
-            });
-
             var chatbox_node = $('#chatbox-log ol');
             chatbox_node.empty();
             _.each(new_state['chat'], function(chat) {
@@ -117,10 +95,35 @@
                 chatbox_node.append(msg_node);
             });
 
-            update_draft(new_state['options']);
+            if ( _.size(new_state['assignments']) === new_state['task']['briefs'].length) {
+                var assignment = new_state['assignments'][lawfight.username];
+                $('#brief-body').html(new_state['task']['briefs'][assignment]);
 
-            var assignment = new_state['assignments'][lawfight.username];
-            $('#brief .panel-body').html(new_state['task']['briefs'][assignment]);
+                $('#header-body').html(new_state['task']['name']);
+                $('#overview-body').html(new_state['task']['overview']);
+                
+                if (template_cache['draft'] === undefined) {
+                    template_cache['draft'] = Handlebars.compile(new_state['task']['draft'], {'strict': true});
+                }
+                $('#draft-body').html(template_cache['draft'](new_state['options']));
+
+                if (template_cache['options'] === undefined) {
+                    template_cache['options'] = Handlebars.compile($('#options-body').html(), {'strict': true});
+                }
+                $('#options-body').html(template_cache['options'](new_state));
+                _.each(new_state['options'], function(option_value, option_name) {
+                    console.log('state changed: ' + option_name, option_value);
+                    var node = $('#option_' + option_name);
+                    node.find('option').each(function() {
+                        var option_node = $(this);
+                        if (option_node.val() === option_value) {
+                            option_node.attr('selected', 'true');
+                        } else {
+                            option_node.removeAttr('selected');
+                        }
+                    });
+                });
+            }
 
             socket.emit('state change', {
                 'new_state': new_state,
