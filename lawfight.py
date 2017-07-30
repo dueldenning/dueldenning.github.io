@@ -12,7 +12,7 @@ from tasks import Tasks
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-app.secret_key = os.environ['FLASK_SECRET_KEY']
+app.secret_key = os.getenv('FLASK_SECRET_KEY', 'DEV_DO_NOT_USE_IN_PROD')
 socketio = SocketIO(app, path='/io')
 
 open_rooms = RoomsController()
@@ -144,4 +144,5 @@ def on_relay_message(message):
 
 # ----------------------------------------------------------
 if __name__ == "__main__":
-    socketio.run(app)
+    port = os.getenv('PORT', default=None)
+    socketio.run(app, port=port)

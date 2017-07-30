@@ -36,7 +36,6 @@ server: venv requirements
 		source venv/bin/activate; \
 		export FLASK_APP=lawfight; \
 		export FLASK_DEBUG=1; \
-		export FLASK_SECRET_KEY=DEV; \
 		flask run; \
 	)
 
