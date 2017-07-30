@@ -1,1 +1,1 @@
-web: python lawfight.py
+web: flask run
