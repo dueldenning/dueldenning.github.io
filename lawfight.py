@@ -47,6 +47,21 @@ def on_get_task(task_name, room_id):
     return render_template("task.html", username=session['username'])
 
 # ----------------------------------------------------------
+@app.route("/user.json", methods=['GET'])
+def on_get_user_json():
+    if 'username' not in session:
+        flask.abort(404)
+
+    return flask.json.jsonify({'username': session['username']})
+
+@app.route("/user.js", methods=['GET'])
+def on_get_user_js():
+    if 'username' not in session:
+        flask.abort(404)
+
+    return render_template('user.js', username=session['username'])
+
+# ----------------------------------------------------------
 @socketio.on('connect')
 def on_connect():
     app.logger.debug('On Connect:' + str(request))

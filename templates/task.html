@@ -53,63 +53,61 @@
 									<form id="options-body" class="form-horizontal">
 										{% raw %}
 										{{#each task.options }}
-											<div class="form-group">
-												<label for="option_{{ @key }}" class="control-label col-sm-2">{{ @key }}</label>
-												<div class="col-sm-10">
-													<select id="option_{{ @key }}" data-option-name="{{ @key }}" class="form-control">
-														{{#each this }}
-															<option value="{{ this }}">{{ this }}</option>
-														{{/each}}
-													</select>
-												</div>
+										<div class="form-group">
+											<label for="option_{{ @key }}" class="control-label col-sm-2">{{ @key }}</label>
+											<div class="col-sm-10">
+												<select id="option_{{ @key }}" data-option-name="{{ @key }}" class="form-control">
+													{{#each this }}
+													<option value="{{ this }}">{{ this }}</option>
+													{{/each}}
+												</select>
 											</div>
+										</div>
 										{{/each}}
-										{% endraw %}
-									</form>
-								</div>
+									{% endraw %}
+								</form>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-4" id="chatbox">
-					<div class="panel panel-default">
-						<div class="panel-heading">Chat</div>
-						<div id="chatbox-log" class="panel-body">
-							<ol class="list-unstyled">
-								<!-- chat lines go here -->
-							</ol>
-						</div>
-						<div class="panel-footer">
-							<input id="chatbox-input" type="text" placeholder="Chat here" class="form-control">
-						</div>
+			</div>
+			<div class="col-sm-4" id="chatbox">
+				<div class="panel panel-default">
+					<div class="panel-heading">Chat</div>
+					<div id="chatbox-log" class="panel-body">
+						<ol class="list-unstyled">
+							<!-- chat lines go here -->
+						</ol>
+					</div>
+					<div class="panel-footer">
+						<input id="chatbox-input" type="text" placeholder="Chat here" class="form-control">
 					</div>
 				</div>
 			</div>
-			<footer class="footer">
-				{% include 'footer.html' %}
-			</footer>
 		</div>
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js" crossorigin="anonymous"></script>
-		<script src="https://unpkg.com/redux@3.7.2/dist/redux.min.js"></script>
-		<script src="http://underscorejs.org/underscore-min.js"></script>
-		<script src="https://cdn.jsdelivr.net/handlebarsjs/4.0.8/handlebars.min.js"></script>
-		<script>
-		(function (window) {
-			var parse_url = function(url) {
-				var a = document.createElement('a');
-				a.href = url;
-				return a;
-			};
-
-			var url_parts = parse_url(window.location).pathname.split('/');
-
-			var lawfight = window.lawfight = window.lawfight || {};
-			lawfight.task_name = url_parts[2];
-			lawfight.room_id = url_parts[4];
-			lawfight.username = '{{ username }}';
-		})(window);
-		</script>
-		<script type="text/javascript" src="{{ url_for('static', filename='task.js') }}"></script>
-	</body>
+		<footer class="footer">
+			{% include 'footer.html' %}
+		</footer>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/redux@3.7.2/dist/redux.min.js"></script>
+	<script src="http://underscorejs.org/underscore-min.js"></script>
+	<script src="https://cdn.jsdelivr.net/handlebarsjs/4.0.8/handlebars.min.js"></script>
+	<script>
+	(function (window) {
+		var parse_url = function(url) {
+			var a = document.createElement('a');
+			a.href = url;
+			return a;
+		};
+		var url_parts = parse_url(window.location).pathname.split('/');
+		var lawfight = window.lawfight = window.lawfight || {};
+		lawfight.task_name = url_parts[2];
+		lawfight.room_id = url_parts[4];
+	})(window);
+	</script>
+	<script src="{{ url_for('on_get_user_js') }}"></script>
+	<script src="{{ url_for('static', filename='task.js') }}"></script>
+</body>
 </html>
