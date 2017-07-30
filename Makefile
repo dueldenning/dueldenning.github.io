@@ -1,5 +1,17 @@
 .PHONY: venv requirements server
 
+clean: clean-venv clean-venv-lint clean-caches
+
+clean-venv:
+	rm -rf venv
+
+clean-venv-lint:
+	rm -rf venv-lint
+
+clean-caches:
+	rm -rf .mypy_cache
+	rm -rf __pycache__
+
 venv:
 	test -d venv || virtualenv-3.6 venv
 
@@ -14,7 +26,7 @@ requirements: venv
 
 requirements-lint: venv-lint
 	( \
-		source venv/bin/activate; \
+		source venv-lint/bin/activate; \
 		pip install -r requirements.txt; \
 		pip install -r requirements-lint.txt; \
 	)
@@ -30,7 +42,7 @@ server: venv requirements
 
 lint: venv-lint requirements-lint
 	( \
-		source venv/bin/activate; \
+		source venv-lint/bin/activate; \
 		pylint **.py; \
 		mypy --ignore-missing-imports **.py; \
 	)
