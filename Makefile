@@ -39,6 +39,13 @@ server: venv requirements
 		flask run; \
 	)
 
+server-prod: venv requirements
+	( \
+		source venv/bin/activate; \
+		export PORT=5000; \
+		python lawfight.py; \
+	)
+
 lint: venv-lint requirements-lint
 	( \
 		source venv-lint/bin/activate; \

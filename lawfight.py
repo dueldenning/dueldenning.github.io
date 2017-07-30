@@ -1,15 +1,22 @@
 import os
+import sys
 import logging
+import logging.config
 
 import flask
 from flask import Flask, render_template, redirect, request, session, url_for
 import flask_socketio
 from flask_socketio import SocketIO
+import yaml
 
 from rooms import RoomsController
 from tasks import Tasks
 
-logging.basicConfig(level=logging.DEBUG)
+# init_logging
+with open('logging.yaml', 'r') as file:
+    logging.config.dictConfig(yaml.load(file))
+    logging.getLogger().info('Set up logging')
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'DEV_DO_NOT_USE_IN_PROD')
@@ -144,5 +151,8 @@ def on_relay_message(message):
 
 # ----------------------------------------------------------
 if __name__ == "__main__":
+    """
+    This is run in prod only
+    """
     port = os.getenv('PORT', default=None)
-    socketio.run(app, port=port)
+    socketio.run(app, port=port, debug=True)
