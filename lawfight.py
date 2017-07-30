@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'DEV_DO_NOT_USE_IN_PROD')
-socketio = SocketIO(app, path='/io')
+socketio = SocketIO(app, path='/io', logger=True)
 
 open_rooms = RoomsController()
 tasks = Tasks('./tasks')
@@ -155,4 +155,4 @@ if __name__ == "__main__":
     This is run in prod only
     """
     port = os.getenv('PORT', default=None)
-    socketio.run(app, port=port, debug=True)
+    socketio.run(app, host='0.0.0.0', port=port, debug=False, use_reloader=False, log_output=True)
