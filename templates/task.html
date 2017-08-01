@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% include 'head.html' %}
+		<link rel="stylesheet" href="{{ url_for('static', filename='task.css') }}">
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div id="header" class="page-header">
+					<h1 id="header-body"><!-- task.name --></h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="row">
+						<div id="overview" class="col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">Overview</div>
+								<div id="overview-body" class="panel-body">
+									<!-- task.overview -->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div id="brief" class="col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">Brief</div>
+								<div id="brief-body" class="panel-body">
+									<!-- task.briefs[assignment] -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-5">
+					<div class="row">
+						<div id="draft" class="col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">Draft</div>
+								<div id="draft-body" class="panel-body">
+									<!-- task.draft -->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div id="options" class="col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">Options</div>
+								<div class="panel-body">
+									<form id="options-body" class="form-horizontal">
+										{% raw %}
+										{{#each task.options }}
+										<div class="form-group">
+											<label for="option_{{ @key }}" class="control-label col-sm-2">{{ @key }}</label>
+											<div class="col-sm-10">
+												<select id="option_{{ @key }}" data-option-name="{{ @key }}" class="form-control">
+													{{#each this }}
+													<option value="{{ this }}">{{ this }}</option>
+													{{/each}}
+												</select>
+											</div>
+										</div>
+										{{/each}}
+									{% endraw %}
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4" id="chatbox">
+				<div class="panel panel-default">
+					<div class="panel-heading">Chat</div>
+					<div id="chatbox-log" class="panel-body">
+						<ol class="list-unstyled">
+							<!-- chat lines go here -->
+						</ol>
+					</div>
+					<div class="panel-footer">
+						<input id="chatbox-input" type="text" placeholder="Chat here" class="form-control">
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="footer">
+			{% include 'footer.html' %}
+		</footer>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js" integrity="sha256-KaSi3am04I2b10TZZ7JqEYrnNk94r0QOeIY3PtwGR/M=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.7.2/redux.min.js" integrity="sha256-Y8AuGIYFWCOBO5/w1oXzcEErW4JALGUWiG5VWleVWyw=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js" integrity="sha256-0JaDbGZRXlzkFbV8Xi8ZhH/zZ6QQM0Y3dCkYZ7JYq34=" crossorigin="anonymous"></script>
+	<script>
+	(function (window) {
+		var parse_url = function(url) {
+			var a = document.createElement('a');
+			a.href = url;
+			return a;
+		};
+		var url_parts = parse_url(window.location).pathname.split('/');
+		var lawfight = window.lawfight = window.lawfight || {};
+		lawfight.task_name = url_parts[2];
+		lawfight.room_id = url_parts[4];
+	})(window);
+	</script>
+	<script src="{{ url_for('on_get_user_js') }}"></script>
+	<script src="{{ url_for('static', filename='task.js') }}"></script>
+</body>
+</html>
