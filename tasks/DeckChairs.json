@@ -1,0 +1,33 @@
+{
+	"draft": "VDC shall pay <b>{{fine}}</b> to Steve's estate in settlement. Steve's family <b>{{act}}</b> sign an NDA (for b>{{years}}</b>.)",
+	"options": {
+		"years": ["1 year", "2 years", "3 years", "4 years"],
+		"fine": ["Nothing", "£10k", "£20k", "£30k", "£40k", "£50k", "£60k", "£70k", "£80k", "£100k", "$150k", "$200k"],
+		"act": ["will sign", "will not sign"]
+	},
+	"overview": "
+	Steve is on a beach. He walks over to the deckchair he has just rented from VeryDangerousChairs Ltd (VDC), holding the stub of his ticket receipt in his hand. 
+
+As Steve sits down the deckchair folds suddenly and unexpectedly, with Steve inside. It crushes Steve to death. 
+
+Blood is sprayed upon the beach, staining the clothes of passersby. The exclusion clause of the ticket stub reads “VeryDangerousChairs Ltd shall accept no liability for any death, injury or financial loss, howsoever caused.”
+
+Steve’s Estate sues VDC for Steve’s death. The BeachGoer Times has got wind of the story, and is sniffing round for an exclusive. 
+",
+
+	"briefs": [
+		"Advice to Steve’s Estate
+
+Steve’s estate wishes to know how much moolah they can get from VDC now that Steve is more chair than man. If they can settle for more than £100k, they have no qualms about keeping shtum to the local press. However, if the exclusion clause is valid, then they reckon a family exclusive on the tragic incident could be worth a dime with the BeachGoer Times. Steve would want something to come of his death after all… 
+
+You calculate your costs in a trial to be ~£20k.
+",
+
+		"Advice to VDC
+
+VDC is adamant that they don’t have to part with a penny. If they really really had to, they’d pay out £70k, but any more and the business will go into administration. The business has no insurance. If it’s possible to get Steve’s family to sign an NDA, VDC will give you a £10k bonus. 
+
+You calculate the additional cost of going to trial to be ~£20k. Obviously, any damages paid to VDC will take priority over your fee on administration… 
+"
+	]
+}
