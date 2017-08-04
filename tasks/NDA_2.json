@@ -1,5 +1,5 @@
 {
-	"draft": "VDC shall pay <b>{{fine}}</b> to Steve's estate in settlement. Steve's family <b>{{act}}</b> sign an NDA (for b>{{years}}</b>.)",
+	"draft": "VDC shall pay <b>{{fine}}</b> to Mr Steve's estate in settlement. Steve's family <b>{{act}}</b> sign an NDA (for b>{{years}}</b>.)",
 	"options": {
 		"years": ["1 year", "2 years", "3 years", "4 years"],
 		"fine": ["Nothing", "£10k", "£20k", "£30k", "£40k", "£50k", "£60k", "£70k", "£80k", "£100k", "$150k", "$200k"],
