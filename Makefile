@@ -13,10 +13,10 @@ clean-caches:
 	rm -rf __pycache__
 
 venv:
-	test -d venv || virtualenv-3.6 venv
+	test -d venv || python3 -m venv venv
 
 venv-lint:
-	test -d venv-lint || virtualenv-3.6 venv-lint
+	test -d venv-lint || python3 -m venv venv-lint
 
 requirements: venv
 	( \
