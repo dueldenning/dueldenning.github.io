@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% include 'head.html' %}
+	</head>
+	<body>
+		<div class="container">
+			<div class="jumbotron">
+				<h1>Welcome to Lawfight!</h1>
+				<p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+				<p><a class="btn btn-lg btn-success" href="#" role="button">Sign up today</a></p>
+			</div>
+			<div class="row">
+				<div class="col-lg-6">
+					<h4>Session</h4>
+					<form>
+						<div class="form-group">
+							<label for="username">Name</label>
+							<input type="text" class="form-control" name="username" id="username" value="{{ username }}">
+						</div>
+						<input class="btn btn-default" type="submit">
+						<a class="btn btn-primary" href="#" role="button">View Rankings</a>
+					</form>
+				</div>
+				<div class="col-lg-6">
+					<h4>Current users in rooms</h4>
+					<ol>
+						{% for room in rooms %}
+							<li><a href="/task/{{ room|replace('/', '/id/') }}">{{ room }}</a></li>
+						{% endfor %}
+					</ol>
+				</div>
+				<div class="col-lg-6">
+					<h4>Start new room</h4>
+					<ol>
+						{% for task in tasks %}
+							<li><a href="/task/{{task}}/id/1">{{ task }}</a></li>
+						{% endfor %}
+					</ol>
+				</div>
+			</div>
+			<p></p>
+			<footer class="footer">
+				{% include 'footer.html' %}
+			</footer>
+		</div>
+	</body>
+</html>

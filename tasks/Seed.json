@@ -1,0 +1,13 @@
+{
+	"draft": "Words here about company raising <b>{{Funding}}</b>. Someone called <b>{{Chairman}}</b> will be the chairman. There will be <b>{{Exclusivity}}</b> of exclusivity.",
+	"options": {
+		"Funding": ["50k", "100k", "250k", "500k"],
+		"Chairman": ["the investor", "my mate steve", "Guy Taylor"],
+		"Exclusivity": ["Loads", "None"]
+	},
+	"overview": "NewCo is raising moeny in a seed round.",
+	"briefs": [
+		"You are NewCo. Raise as much money as you can - we're going to need it!",
+		"You are an angel investor. You don't want to raise more than £100k, and it must be EIS compliant."
+	]
+}

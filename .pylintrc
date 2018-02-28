@@ -1,0 +1,5 @@
+[MESSAGES CONTROL]
+
+#   C0111 = Missing docstrin
+
+disable=C0111
