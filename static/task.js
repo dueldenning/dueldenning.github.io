@@ -49,6 +49,13 @@
     });
     socket.open(); // start it up
 
+    // exit button
+    var exit = $('#signContract');
+    exit.click( function() {
+        $('#signContract').hide()
+    }));
+
+
     // Chat
     var input = $('#chatbox-input');
     input.on('keydown', function(ev) {
